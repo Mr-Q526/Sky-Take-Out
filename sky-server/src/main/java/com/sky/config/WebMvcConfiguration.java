@@ -51,8 +51,8 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.sky.controller"))
-                .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.sky.cont roller"))//指定扫描的包路径，这里只扫描 com.sky.controller 包下的控制器类。
+                .paths(PathSelectors.any())//扫描所有路径的接口方法（如果只想扫描特定路径，可以用 PathSelectors.ant("/api/**")）。
                 .build();
         return docket;
     }
