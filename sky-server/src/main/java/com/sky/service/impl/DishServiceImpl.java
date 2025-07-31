@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.datatransfer.FlavorEvent;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -71,6 +72,7 @@ public class DishServiceImpl implements DishService {
     }
 
     @Transactional
+    @Override
     public void deleteBatch(List<Long> ids) {
 
         // 判断菜品是否是在售状态
@@ -91,5 +93,37 @@ public class DishServiceImpl implements DishService {
         dishMapper.deleteByIds(ids);
         // 删除菜品口味数据
         dishFlavorMapper.deleteByDishIds(ids);
+    }
+
+    @Override
+    public DishVO getByIdWithFlavor(Long id) {
+        Dish dish = dishMapper.getById(id);
+
+        // 根据菜品id查询菜品口味
+        List<DishFlavor> dishFlavors = dishFlavorMapper.getByDishId(id);
+
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish,dishVO);
+        dishVO.setFlavors(dishFlavors);
+
+        return dishVO;
+    }
+
+    @Override
+    public void updateWithFlavor(DishDTO dishDTO){
+        Dish dish = new Dish();
+        // 先更新菜品信息
+        BeanUtils.copyProperties(dishDTO,dish);
+        dishMapper.update(dish);
+        // 把口味先删再加新的
+        dishFlavorMapper.deleteByDishIds(Arrays.asList(dishDTO.getId()));
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        if (flavors != null && flavors.size() > 0) {
+            // 批量设置id
+            flavors.forEach(dishFlavor -> {
+                dishFlavor.setDishId(dishDTO.getId());
+            });
+            dishFlavorMapper.insertBatch(flavors);
+        }
     }
 }
