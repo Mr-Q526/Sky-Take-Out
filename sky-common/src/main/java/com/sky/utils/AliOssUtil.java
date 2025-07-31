@@ -28,6 +28,12 @@ public class AliOssUtil {
      */
     public String upload(byte[] bytes, String objectName) {
 
+        // 定义要上传的目录前缀
+        String directory = "sky-take-out/avatar/";
+
+        // 拼接完整的对象名称，包含目录路径
+        objectName = directory + objectName;
+
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
