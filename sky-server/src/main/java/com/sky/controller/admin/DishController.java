@@ -64,6 +64,14 @@ public class DishController {
         return Result.success();
     }
 
+    @PostMapping("/status/{status}")
+    @ApiOperation("起售、停售菜品")
+    public Result startOrStop(@PathVariable Integer status, Long id) {
+        log.info("起售、停售菜品：{}", id);
+        dishService.startOrStop(status, id);
+        return Result.success();
+    }
+
     /*
         根据分类id查询菜品
         返回 Dish类型， 因为新增套餐页面不关心菜品的口味，只需要添加这个菜品即可
