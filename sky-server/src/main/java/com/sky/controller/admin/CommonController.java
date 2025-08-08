@@ -40,7 +40,7 @@ public class CommonController {
             String filePath = aliOssUtil.upload(file.getBytes(),objectName);
             return Result.success(filePath);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("文件上传失败", e);  // 使用 Slf4j 打印错误堆栈，必现于日志中
         }
         return Result.success();
     }
