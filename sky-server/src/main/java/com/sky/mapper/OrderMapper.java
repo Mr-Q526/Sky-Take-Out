@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.core.annotation.Order;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -59,4 +60,8 @@ public interface OrderMapper {
     List<Orders> getByStatusAndOrderTimeLT(Integer status, LocalDateTime orderTime);
 
     Double sumByMap(Map map);
+
+    Integer countByMap(Map map);
+
+    Integer getOrderCount(LocalDateTime beginTime, LocalDateTime endTime, Integer status);
 }
