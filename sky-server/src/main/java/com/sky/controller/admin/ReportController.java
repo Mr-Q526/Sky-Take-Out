@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 
 @RestController
@@ -76,6 +77,13 @@ public class ReportController {
         log.info("查询销量排名top10，开始时间：{}，结束时间：{}", begin, end);
 
         return Result.success(reportService.getSalesTop10(begin, end));
+    }
+
+    @GetMapping("/export")
+    @ApiOperation("导出运营数据数据")
+    public void export(HttpServletResponse response){
+        log.info("导出运营数据");
+        reportService.exportBusinessData(response);
     }
 
 }
